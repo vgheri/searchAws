@@ -1,14 +1,14 @@
 package main
 
 import (
-	// "encoding/json"
+	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/vanng822/go-solr/solr"
 	"log"
 	"net/http"
 	"strconv"
-	// "time"
-	"fmt"
+	"time"
 )
 
 // Article models the result for the /getAll/ route
@@ -66,19 +66,24 @@ func main() {
 
 // GetAllHandler handles requests
 func GetAllHandler(w http.ResponseWriter, r *http.Request) {
-	// start := time.Now()
+	start := time.Now()
 
 	w.Header().Set("Content-Type", "application/json")
-	// response, err := json.Marshal()
-	// if err != nil {
-	// 	w.WriteHeader(http.StatusInternalServerError)
-	// 	return
-	// }
 
-	// w.Write(response)
-	// duration := time.Since(start)
-	// log.Printf("\t%s\t%s",
-	// 	r.RequestURI,
-	// 	duration)
+	query := solr.NewQuery()
+	query.Q("Title:Test title")
+	s := solrServer.Search(query)
+	resp, _ := s.Result(nil)
+	fmt.Println(resp.Results.Docs)
+	response, err := json.Marshal(resp)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Write(response)
+	duration := time.Since(start)
+	log.Printf("\t%s\t%s",
+		r.RequestURI,
+		duration)
 	return
 }
