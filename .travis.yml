@@ -9,7 +9,7 @@ go:
   - tip
 
 after_success:
-  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o searchAws .
+  - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o search .
   - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
   - export REPO=valeriogheri/search
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
