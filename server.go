@@ -75,7 +75,7 @@ func GetAllHandler(w http.ResponseWriter, r *http.Request) {
 	s := solrServer.Search(query)
 	resp, _ := s.Result(nil)
 	fmt.Println(resp.Results.Docs)
-	response, err := json.Marshal(resp.Results.Docs)
+	response, err := json.Marshal(resp.Results.Docs[0])
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
